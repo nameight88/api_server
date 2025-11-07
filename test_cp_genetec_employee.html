@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Walkup API - 통합 테스트</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            margin: 0;
+            padding: 2rem;
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #0d6efd;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        h2, h3 {
+            color: #343a40;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-section {
+            grid-column: 1 / -1;
+            border: 1px solid #dee2e6;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+        
+        .form-section h3 {
+            margin-top: 0;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 0.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            padding: 0.75rem;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 0.5rem;
+        }
+        .checkbox-group label {
+            font-weight: normal;
+        }
+
+        button {
+            grid-column: 1 / -1;
+            padding: 0.85rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            background-color: #0d6efd;
+            color: white;
+        }
+
+        button:hover {
+            background-color: #0b5ed7;
+        }
+
+        pre {
+            background-color: #212529;
+            color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: "SF Mono", Menlo, Monaco, Consolas, monospace;
+        }
+        
+        .request-body {
+             background-color: #e9ecef;
+             color: #212529;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Walkup API 테스트 도구</h1>
+        
+        <!-- 토큰 입력 섹션 -->
+        <div class="form-section">
+            <h3>1. 토큰 입력</h3>
+            <div class="form-group">
+                <label for="currentToken">Bearer Token (12자리)</label>
+                <input type="text" id="currentToken" placeholder="유효한 12자리 토큰을 입력하세요" maxlength="12">
+            </div>
+        </div>
+
+        <h2>2. 직원 검색 API 테스트 (/api/employees/search)</h2>
+        <form id="searchApiForm">
+            
+            <div class="form-section">
+                <h3>검색 조건 (Conditions)</h3>
+                <div class="form-group">
+                    <label for="searchTerm">사번 검색 (searchTerm)</label>
+                    <input type="text" id="searchTerm" placeholder="검색할 사번 입력">
+                </div>
+                <div class="form-group">
+                    <label for="is_active_filter">활성 상태 (is_active)</label>
+                    <select id="is_active_filter">
+                        <option value="">전체</option>
+                        <option value="1">활성 (1)</option>
+                        <option value="0">비활성 (0)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="card_type_filter">카드 타입 (card_type)</label>
+                    <select id="card_type_filter">
+                        <option value="">전체</option>
+                        <option value="32">32</option>
+                        <option value="48">48</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="batch_status_filter">배치 상태 (batch_status)</label>
+                    <select id="batch_status_filter">
+                        <option value="">전체</option>
+                        <option value="null">null</option>
+                        <option value="ok">ok</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="lang_filter">언어 (lang)</label>
+                    <select id="lang_filter">
+                        <option value="">전체</option>
+                        <option value="kor">한국어 (kor)</option>
+                        <option value="en">영어 (en)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>반환 필드 선택 (Fields)</h3>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="fields" value="employee_no" checked> employee_no</label>
+                    <label><input type="checkbox" name="fields" value="credential_guid"> credential_guid</label>
+                    <label><input type="checkbox" name="fields" value="cardholder_guid"> cardholder_guid</label>
+                    <label><input type="checkbox" name="fields" value="card_type"> card_type</label>
+                    <label><input type="checkbox" name="fields" value="card_id" checked> card_id</label>
+                    <label><input type="checkbox" name="fields" value="company_id"> company_id</label>
+                    <label><input type="checkbox" name="fields" value="created_on"> created_on</label>
+                    <label><input type="checkbox" name="fields" value="updated_on"> updated_on</label>
+                    <label><input type="checkbox" name="fields" value="is_active" checked> is_active</label>
+                    <label><input type="checkbox" name="fields" value="batch_status"> batch_status</label>
+                    <label><input type="checkbox" name="fields" value="lang"> lang</label>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>페이징 (Pagination)</h3>
+                <div class="form-group">
+                    <label for="page">페이지 (page)</label>
+                    <input type="number" id="page" value="1" min="1">
+                </div>
+                <div class="form-group">
+                    <label for="pageSize">페이지 당 개수 (pageSize)</label>
+                    <input type="number" id="pageSize" value="10" min="1">
+                </div>
+            </div>
+
+            <button type="submit">통합 검색 API 요청</button>
+        </form>
+
+        <h3>요청 본문 (Request Body)</h3>
+        <pre id="requestBody" class="request-body"></pre>
+
+        <h3>응답 (Response)</h3>
+        <pre id="response">{ "message": "API를 요청하여 결과를 확인하세요." }</pre>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:3010';
+
+        // 직원 검색 폼 처리
+        document.getElementById('searchApiForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const responseElement = document.getElementById('response');
+            const requestBodyElement = document.getElementById('requestBody');
+
+            // 토큰 확인
+            const currentToken = document.getElementById('currentToken').value.trim();
+            if (!currentToken) {
+                responseElement.textContent = JSON.stringify({
+                    success: false,
+                    message: '먼저 유효한 12자리 토큰을 입력해주세요.'
+                }, null, 2);
+                return;
+            }
+
+            if (currentToken.length !== 12) {
+                responseElement.textContent = JSON.stringify({
+                    success: false,
+                    message: '토큰은 정확히 12자리여야 합니다.'
+                }, null, 2);
+                return;
+            }
+
+            // 1. Filters 수집
+            const filters = {
+                is_active: document.getElementById('is_active_filter').value ? parseInt(document.getElementById('is_active_filter').value, 10) : undefined,
+                card_type: document.getElementById('card_type_filter').value || undefined,
+                batch_status: document.getElementById('batch_status_filter').value || undefined,
+                lang: document.getElementById('lang_filter').value || undefined,
+            };
+            if (filters.batch_status === 'null') {
+                filters.batch_status = null;
+            }
+            // 값이 undefined인 속성 제거
+            Object.keys(filters).forEach(key => filters[key] === undefined && delete filters[key]);
+
+            // 2. Search 수집
+            const search = {
+                employee_no: document.getElementById('searchTerm').value || undefined
+            };
+            Object.keys(search).forEach(key => search[key] === undefined && delete search[key]);
+
+            // 3. Fields 수집
+            const fields = Array.from(document.querySelectorAll('input[name="fields"]:checked')).map(el => el.value);
+
+            // 4. Pagination 수집
+            const pagination = {
+                page: parseInt(document.getElementById('page').value),
+                limit: parseInt(document.getElementById('pageSize').value)
+            };
+
+            // 최종 요청 본문
+            const requestBody = { filters, search, fields, pagination };
+
+            requestBodyElement.textContent = JSON.stringify(requestBody, null, 2);
+            responseElement.textContent = '요청 중...';
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/employees/search`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${currentToken}`
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+
+                const result = await response.json();
+                responseElement.textContent = JSON.stringify(result, null, 2);
+
+            } catch (error) {
+                console.error('API 요청 오류:', error);
+                responseElement.textContent = JSON.stringify({ 
+                    success: false, 
+                    message: 'API 요청 중 오류 발생', 
+                    error: error.message 
+                }, null, 2);
+            }
+        });
+    </script>
+</body>
+
+</html>
