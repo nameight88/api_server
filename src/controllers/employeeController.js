@@ -2,7 +2,6 @@ const employeeService = require('../services/employeeService');
 const logger = require('../utils/logger');
 
 class EmployeeController {
-  // 통합 직원 검색
   async searchEmployees(req, res) {
     try {
       logger.info('searchEmployees 요청:', { body: req.body, ip: req.ip });
