@@ -5,8 +5,8 @@ const sequelize = new Sequelize(
   process.env.COUBOX_DB_USER || 'root', 
   process.env.COUBOX_DB_PASSWORD || '',
   {
-    host: process.env.COUBOX_DB_HOST || '61.32.97.138',
-    port: process.env.DB_PORT || 33306,
+    host: process.env.COUBOX_DB_HOST || '127.0.0.1',
+    port: process.env.DB_PORT || 3306,
     dialect: 'mysql',
     logging: process.env.NODE_ENV === 'development' ? console.log : false,
     timezone: '+09:00',
