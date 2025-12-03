@@ -5,7 +5,6 @@ chrome.runtime.onInstalled.addListener(()=>{
 		contexts:["all"]
 	});
 });
-//const urlPrefix="https://coubox.coupang.net:3010";
 const urlPrefix="http://localhost:3010";
 chrome.runtime.onMessage.addListener((msg,sender,sendResponse)=>{
 	(async()=>{
