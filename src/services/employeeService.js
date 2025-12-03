@@ -2,7 +2,6 @@ const employeeRepository = require('../repositories/employeeRepository');
 const logger = require('../utils/logger');
 
 class EmployeeService {
-  // 통합 직원 검색
   async searchEmployees(conditions = {}, fields = [], pagination = {}) {
     try {
       const page = pagination?.page || 1;
