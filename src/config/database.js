@@ -1,9 +1,9 @@
 const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize(
-  process.env.COUBOX_DB_DATABASE || 'couboxdb',
-  process.env.COUBOX_DB_USER || 'root', 
-  process.env.COUBOX_DB_PASSWORD || '',
+  process.env.DB_DATABASE || 'userdb',
+  process.env.DB_USER || 'scout', 
+  process.env.DB_PASSWORD || 'tiger',
   {
     host: process.env.COUBOX_DB_HOST || '127.0.0.1',
     port: process.env.DB_PORT || 3306,
