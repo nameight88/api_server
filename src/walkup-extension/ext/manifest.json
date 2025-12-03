@@ -7,8 +7,8 @@
     "service_worker": "background.js"
   },
 	"host_permissions":[
-		"https://coubox.coupang.com:3010/*",
-		"http://coubox.coupang.com:3010/*"
+		"http://domain.com:3010/*",
+		"http://domain.com:3010/*"
 	],
   "action": {
 	"default_popup":"popup.html"
