@@ -3,7 +3,6 @@ const { Op } = require('sequelize');
 
 class EmployeeRepository {
   
-  // 모든 직원 조회 (페이징 및 동적 필터링)
   async findAll(filters = {}, pagination = {}, columns = []) {
     const { page = 1, limit = 100 } = pagination;
     const offset = (page - 1) * limit;
@@ -13,7 +12,6 @@ class EmployeeRepository {
 
     const andConditions = [];
 
-    // 다른 필터 조건들을 AND로 구성
     for (const key in otherFilters) {
       if (otherFilters.hasOwnProperty(key) && otherFilters[key] !== undefined) {
         if (key === 'batch_status' && otherFilters[key] === 'null') {
@@ -24,9 +22,7 @@ class EmployeeRepository {
       }
     }
 
-    // searchTerm을 사용한 OR 조건 검색
     if (searchTerm && searchTerm.trim() !== '') {
-      // const searchableFields = ['employee_no', 'card_id']; // 검색 가능한 필드 지정
        const searchableFields = ['employee_no'];
       andConditions.push({
         [Op.or]: searchableFields.map(field => ({
