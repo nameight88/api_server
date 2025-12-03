@@ -1,7 +1,7 @@
 # API Server
 ##### Node 18 version
 ##### DB MySQL
-cp_genetec_employee 테이블 데이터를 전송하는 API 서버입니다.
+테이블 데이터를 전송하는 API 서버입니다.
 
 ## 📋 목차
 
